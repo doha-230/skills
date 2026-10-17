@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Office COM MCP 사용설명서 · 폐쇄망 Windows</title>
+  <style>
+    :root{--ink:#172a3a;--muted:#536776;--line:#d9e3e8;--paper:#fff;--surface:#f4f8fa;--accent:#08777a;--accent-dark:#07585a;--warm:#fff6e8;--warm-line:#e9c580;--shadow:0 12px 34px rgba(26,54,70,.08)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--surface);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Malgun Gothic",sans-serif}
+    a{color:var(--accent-dark)} a:hover{text-decoration-thickness:2px} a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #e39836;outline-offset:3px} code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    .shell{max-width:1420px;margin:auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:34px;padding:28px 30px 80px}
+    .side{position:sticky;top:22px;align-self:start;max-height:calc(100vh - 44px);overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-weight:800;letter-spacing:-.02em}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--accent);color:#fff;font-size:13px}.side small{display:block;color:var(--muted);font-size:12px;margin-bottom:14px}.side nav a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14px}.side nav a:hover{background:#e7f3f2;color:var(--accent-dark)}.side .secondary{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+    main{min-width:0}.hero{position:relative;overflow:hidden;border-radius:25px;background:linear-gradient(125deg,#14384a,#126970 66%,#189087);color:#fff;padding:45px 49px;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(255,255,255,.2);border-radius:50%;right:-110px;top:-150px;box-shadow:0 0 0 60px rgba(255,255,255,.045),0 0 0 125px rgba(255,255,255,.035)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#aee7dd}.hero h1{position:relative;z-index:1;margin:10px 0 14px;font-size:clamp(29px,4vw,48px);line-height:1.2;letter-spacing:-.045em}.hero p{position:relative;z-index:1;max-width:710px;margin:0;color:#e2f5f1;font-size:18px}.hero-badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:27px}.hero-badges span{border:1px solid rgba(255,255,255,.36);border-radius:999px;padding:5px 11px;font-size:13px;background:rgba(255,255,255,.09)}
+    section{scroll-margin-top:22px;margin-top:27px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow)} h2{margin:0 0 14px;font-size:26px;letter-spacing:-.035em;line-height:1.3} h3{margin:25px 0 9px;font-size:18px;letter-spacing:-.02em} p{margin:9px 0 14px} ul,ol{padding-left:1.35em;margin:8px 0 14px} li+li{margin-top:6px} .lede{font-size:17px;color:var(--muted)}.step{display:flex;gap:14px;margin:17px 0}.num{flex:0 0 30px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#d7eeeb;color:#07585a;font-weight:800}.step>div{min-width:0}.step strong{display:block}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:19px 0}.card{border:1px solid var(--line);border-radius:13px;padding:17px;background:#fbfdfd}.card strong{display:block;font-size:17px}.card p{color:var(--muted);font-size:14px;margin:6px 0 0}.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 7px;border-radius:5px;background:#dcefed;color:#07585a;margin-bottom:6px}
+    .flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:18px 0}.flow span{border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:#f8fbfc;font-size:14px;font-weight:700}.flow b{color:var(--accent)}
+    .note{border-left:4px solid var(--accent);background:#edf8f7;border-radius:0 10px 10px 0;padding:12px 16px;margin:18px 0}.note.warn{border-left-color:#b77915;background:var(--warm)}.note p{margin:0}.note strong{display:block;margin-bottom:3px}
+    .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:15px 0} table{border-collapse:collapse;width:100%;min-width:580px} th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:11px 13px} th{background:#eff5f6;font-size:13px;color:#405c68;white-space:nowrap} tr:last-child td{border-bottom:0} td code{font-size:13px;overflow-wrap:anywhere}
+    pre{overflow:auto;background:#172c3c;color:#eef9fb;border-radius:12px;padding:18px 20px;font-size:13px;line-height:1.55;margin:11px 0 17px;white-space:pre} pre code{font:inherit}.small{font-size:13px;color:var(--muted)} .inline-code{background:#ecf2f4;border-radius:4px;padding:2px 5px;font-size:.88em}
+    .callout-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.callout-grid .note{margin:6px 0}.tool-search{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}.tool-search input{flex:1;min-width:210px;border:1px solid #9ab3bc;border-radius:10px;padding:10px 13px;background:#fff;color:var(--ink);font:inherit}.tool-search output{font-size:14px;color:var(--muted)}#tool-table td:first-child{white-space:nowrap;font-weight:700}#tool-table td:nth-child(2){white-space:nowrap}.hidden-row{display:none} .footer{font-size:13px;color:var(--muted);padding:20px 4px 0}
+    @media(max-width:1020px){.shell{display:block;padding:14px 14px 50px}.side{position:static;max-height:none;margin-bottom:15px}.side nav{display:flex;flex-wrap:wrap;gap:3px}.side nav a{padding:5px 8px}.side small,.side .secondary{display:none}.hero{padding:32px 25px}section{padding:24px 22px}.cards{grid-template-columns:1fr 1fr}}
+    @media(max-width:620px){.cards,.callout-grid{grid-template-columns:1fr}.hero p{font-size:16px}.hero-badges{gap:6px}.hero-badges span{font-size:12px}section{border-radius:14px;padding:22px 18px}h2{font-size:22px}.flow{display:block}.flow span{display:block;margin:7px 0}.flow b{display:none}}
+    @media print{body{background:#fff;color:#000}.shell{display:block;max-width:none;padding:0}.side{display:none}.hero{box-shadow:none;background:#fff;color:#000;border:1px solid #999;padding:20px}.hero p,.eyebrow{color:#000}.hero-badges span{border-color:#888;color:#000}section{box-shadow:none;break-inside:avoid;margin-top:15px;border-color:#aaa}a{color:#000;text-decoration:underline}pre{white-space:pre-wrap;color:#000;background:#f2f2f2}#catalog{break-inside:auto}#tool-table tr{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" aria-label="목차">
+    <div class="brand"><span class="brand-mark">COM</span><span>Office MCP 안내서</span></div>
+    <small>폐쇄망 Windows · 한국어 · 오프라인 HTML</small>
+    <nav aria-label="문서 목차">
+      <a href="#overview">한눈에 보기</a>
+      <a href="#requirements">준비물과 구성</a>
+      <a href="#install">폐쇄망 설치</a>
+      <a href="#connect">MCP 연결</a>
+      <a href="#first-run">첫 실행과 확인</a>
+      <a href="#workflows">앱별 사용 흐름</a>
+      <a href="#catalog">도구 목록</a>
+      <a href="#troubleshooting">문제 해결</a>
+      <a href="#limits">범위와 출처</a>
+    </nav>
+    <div class="secondary"><a href="README.md">텍스트 설치 안내</a><br><a href="docs/TOOLS.md">원본 도구 상세</a></div>
+  </aside>
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Local Office automation</div>
+      <h1>Office COM MCP<br>사용설명서</h1>
+      <p>Word, PowerPoint, Excel을 폐쇄망 Windows에서 직접 제어합니다. 설치부터 MCP 연결, 문서 확인, 오류 해결까지 순서대로 따라가세요.</p>
+      <div class="hero-badges"><span>Windows 64비트</span><span>Python 3.11</span><span>Word · PowerPoint · Excel</span><span>로컬 stdio</span></div>
+    </header>
+
+    <section id="overview">
+      <h2>한눈에 보기</h2>
+      <p class="lede">MCP 클라이언트가 로컬 Python 서버에 도구 호출을 보내면, 서버가 Windows COM을 통해 설치된 Office 앱을 조작합니다.</p>
+      <div class="flow" role="img" aria-label="MCP 클라이언트에서 표준 입출력으로 Python 서버에 연결하고, 로컬 브리지를 거쳐 Windows COM으로 Office 앱을 조작하는 구조">
+        <span>MCP 클라이언트</span><b>→</b><span>Python 서버 · stdio</span><b>→</b><span>로컬 브리지 · 127.0.0.1</span><b>→</b><span>Windows COM · Office</span>
+      </div>
+      <div class="cards">
+        <div class="card"><span class="pill">Word · doc_*</span><strong>문서 작성·편집</strong><p>문단, 스타일, 표, 이미지, 목차와 PDF 내보내기</p></div>
+        <div class="card"><span class="pill">PowerPoint · ppt_*</span><strong>발표자료 구성</strong><p>슬라이드, 도형, 차트, 애니메이션과 PDF·이미지 내보내기</p></div>
+        <div class="card"><span class="pill">Excel · xl_*</span><strong>표 계산·시각화</strong><p>셀·수식, 서식, 필터, 차트, 피벗과 PDF 내보내기</p></div>
+      </div>
+      <div class="note"><strong>폐쇄망 동작</strong><p>문서 처리에 인터넷이나 API 키가 필요 없습니다. 인터넷 사진 검색 도구는 제거했습니다. 이미지는 로컬 파일을 <code class="inline-code">ppt_add_image</code>로 넣습니다.</p></div>
+    </section>
+
+    <section id="requirements">
+      <h2>준비물과 파일 구성</h2>
+      <div class="table-wrap"><table><thead><tr><th>항목</th><th>필요한 상태</th></tr></thead><tbody>
+        <tr><td>운영체제</td><td>Windows 10/11 64비트</td></tr>
+        <tr><td>Office</td><td>데스크톱 Microsoft Office 2019 이상. 사용할 Word·PowerPoint·Excel 앱이 설치되어 있어야 합니다.</td></tr>
+        <tr><td>Python</td><td>Python 3.11 64비트, <code>venv</code>와 <code>pip</code> 포함. 기본 설치 스크립트는 Python Launcher <code>py</code>를 사용합니다.</td></tr>
+        <tr><td>MCP 클라이언트</td><td>로컬 stdio MCP 서버를 등록·실행할 수 있는 클라이언트</td></tr>
+      </tbody></table></div>
+      <p><code class="inline-code">office-com</code> 폴더 전체를 복사해야 합니다. <code class="inline-code">server.py</code>와 <code class="inline-code">bridge/</code>는 실행 코드, <code class="inline-code">wheelhouse/win_amd64_py311/</code>에는 30개 Windows용 wheel, <code class="inline-code">install-offline.ps1</code>은 오프라인 설치 스크립트입니다.</p>
+      <div class="note warn"><strong>설치 매체</strong><p>Python과 Office 설치 프로그램은 이 폴더에 들어 있지 않습니다. 폐쇄망 PC에 미리 설치하거나 별도 매체로 준비하세요. wheel은 Python 3.11 64비트 Windows용입니다.</p></div>
+    </section>
+
+    <section id="install">
+      <h2>폐쇄망 PC에 설치하기</h2>
+      <div class="step"><span class="num">1</span><div><strong>폴더를 통째로 복사</strong><span>예를 들어 <code>C:\OfficeMCP\office-com</code>에 복사합니다. <code>wheelhouse</code>를 포함해야 합니다.</span></div></div>
+      <div class="step"><span class="num">2</span><div><strong>PowerShell에서 설치 실행</strong><span>설치 스크립트는 wheel 해시를 확인한 뒤 인터넷 인덱스를 사용하지 않고 설치합니다.</span></div></div>
+      <pre><code>cd C:\OfficeMCP\office-com
+powershell -ExecutionPolicy Bypass -File .\install-offline.ps1</code></pre>
+      <p class="small">Python Launcher가 없으면 <code>-PythonExe "C:\경로\python.exe"</code>를 명령 끝에 추가하세요.</p>
+      <div class="step"><span class="num">3</span><div><strong>완료 메시지 확인</strong><span>스크립트가 <code>.venv</code>를 만들고 <code>pywin32</code>를 등록한 뒤 MCP 도구 등록을 확인합니다.</span></div></div>
+      <pre><code>.\.venv\Scripts\python.exe .\verify-windows.py</code></pre>
+      <div class="note"><strong>직접 설치할 때</strong><p>가상 환경을 이미 만들었다면 <code>pip install --no-index --find-links .\wheelhouse\win_amd64_py311 -r .\requirements.txt</code>를 사용합니다. 자세한 명령은 <a href="wheelhouse/README.md">wheel 안내</a>를 보세요.</p></div>
+    </section>
+
+    <section id="connect">
+      <h2>MCP 클라이언트에 연결하기</h2>
+      <p>클라이언트에 실행 명령과 인수를 등록합니다. 아래는 <code>mcpServers</code> 형식의 설정 예입니다. 설치 위치에 맞게 절대 경로를 바꾸고, 해당 클라이언트의 MCP 설정 형식에 넣으세요.</p>
+      <pre><code>{
+  "mcpServers": {
+    "office-com": {
+      "command": "C:\\OfficeMCP\\office-com\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\OfficeMCP\\office-com\\server.py"],
+      "env": {
+        "PYTHONUTF8": "1",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}</code></pre>
+      <p>클라이언트를 다시 시작한 뒤 <code class="inline-code">office_status</code> 도구가 보이는지 확인하세요. 서버는 stdio로 통신합니다. 수동 실행하면 메시지를 기다리며 출력 없이 대기하는 것이 정상입니다.</p>
+      <div class="note warn"><strong>경로와 저장 위치</strong><p>문서와 이미지 경로는 가능한 한 Windows 절대 경로를 사용하세요. 새 파일을 저장할 폴더는 먼저 만들어 두어야 합니다. 이미 열린 문서를 편집하는 도구는 실제 파일을 바꿀 수 있으므로 중요한 원본은 복사본으로 작업하세요.</p></div>
+    </section>
+
+    <section id="first-run">
+      <h2>첫 실행 점검</h2>
+      <ol>
+        <li><code>office_status</code>를 호출해 브리지 연결 상태를 봅니다. 이 도구는 앱을 강제로 열지 않습니다.</li>
+        <li>Word, PowerPoint, Excel에서 각각 테스트 파일을 열거나 도구로 새 파일을 만듭니다.</li>
+        <li><code>doc_get_document_info</code>, <code>ppt_get_presentation_info</code>, <code>xl_get_workbook_info</code>로 내용을 읽습니다.</li>
+        <li>테스트 파일에 작은 변경을 적용하고 해당 앱의 <code>doc_save</code>, <code>ppt_save</code>, <code>xl_save</code>를 호출합니다.</li>
+        <li>Office 화면과 저장 파일을 확인합니다.</li>
+      </ol>
+      <p class="small">앱이 이미 실행 중이면 해당 인스턴스에 연결하고, 실행 중이지 않으면 첫 COM 호출에서 앱을 시작할 수 있습니다. 슬라이드·문단 번호는 1부터 시작합니다.</p>
+    </section>
+
+    <section id="workflows">
+      <h2>앱별 사용 흐름</h2>
+      <div class="cards">
+        <div class="card"><span class="pill">WORD</span><strong>보고서 예시</strong><p><code>doc_create_document</code> → <code>doc_add_paragraph</code> → <code>doc_get_document_info</code> → <code>doc_save</code> → <code>doc_export_pdf</code></p></div>
+        <div class="card"><span class="pill">POWERPOINT</span><strong>발표자료 예시</strong><p><code>ppt_create_presentation</code> → <code>ppt_add_slide</code> → <code>ppt_set_title</code> → <code>ppt_list_slides</code> → <code>ppt_save</code></p></div>
+        <div class="card"><span class="pill">EXCEL</span><strong>표 예시</strong><p><code>xl_create_workbook</code> → <code>xl_set_range</code> → <code>xl_get_used_range</code> → <code>xl_save</code> → <code>xl_export_pdf</code></p></div>
+      </div>
+      <h3>클라이언트에 이렇게 요청해 보세요</h3>
+      <pre><code>“C:\Work\sample.xlsx를 열고 Sheet1의 사용 범위를 읽어 요약해 줘. 파일은 수정하지 마.”
+
+“C:\Work\draft.pptx를 열고 슬라이드 제목과 본문을 확인한 뒤,
+3번 슬라이드의 제목만 바꾸고 저장해 줘.”
+
+“C:\Work\report.docx의 문단 수와 제목 구조를 확인해 줘.
+수정 전에 바꿀 내용을 먼저 정리해 줘.”</code></pre>
+      <p>도구 결과는 보통 <code class="inline-code">{"ok": true, "result": ...}</code> 또는 <code class="inline-code">{"ok": false, "error": ...}</code> 형태입니다. 오류의 <code>type</code>과 <code>message</code>를 확인하세요.</p>
+    </section>
+
+    <section id="catalog">
+      <h2>도구 목록</h2>
+      <p>현재 서버 코드에서 등록된 도구 <strong id="total-tools">129</strong>개입니다. 이름 또는 설명으로 검색하세요. 상세 인수는 <a href="docs/TOOLS.md">도구 상세 문서</a>를 참조할 수 있습니다.</p>
+      <div class="tool-search"><label for="tool-filter">도구 검색</label><input id="tool-filter" type="search" placeholder="예: pdf, chart, doc_" autocomplete="off"><output id="visible-tools" aria-live="polite">전체 표시</output></div>
+      <div class="table-wrap"><table id="tool-table"><thead><tr><th>도구</th><th>앱</th><th>기능 요약</th></tr></thead><tbody>
+        <tr><td><code>office_status</code></td><td>공통</td><td>COM bridge state: whether the Bridge runs and which Office apps are connected.</td></tr>
+        <tr><td><code>doc_add_bullet_list</code></td><td>Word</td><td>Dodaje liste punktowana.</td></tr>
+        <tr><td><code>doc_add_caption</code></td><td>Word</td><td>A numbered caption next to a paragraph. &#x27;label&#x27; is a built-in label</td></tr>
+        <tr><td><code>doc_add_footnote</code></td><td>Word</td><td>Adds a footnote at the end of the given paragraph.</td></tr>
+        <tr><td><code>doc_add_heading</code></td><td>Word</td><td>Appends a level 1-9 heading (Heading N style).</td></tr>
+        <tr><td><code>doc_add_hyperlink</code></td><td>Word</td><td>Inserts a hyperlink; without &#x27;paragraph_index&#x27; appends it at the end.</td></tr>
+        <tr><td><code>doc_add_numbered_list</code></td><td>Word</td><td>Adds a numbered list (&#x27;items&#x27; format as in doc_add_bullet_list).</td></tr>
+        <tr><td><code>doc_add_page_numbers</code></td><td>Word</td><td>Inserts page numbers into the footer (left, center or right).</td></tr>
+        <tr><td><code>doc_add_paragraph</code></td><td>Word</td><td>Appends a paragraph at the end of the document.</td></tr>
+        <tr><td><code>doc_apply_style</code></td><td>Word</td><td>Nadaje akapitowi styl (Heading 1, Normal, Quote albo styl wlasny).</td></tr>
+        <tr><td><code>doc_close</code></td><td>Word</td><td>Closes the current document, saving changes by default.</td></tr>
+        <tr><td><code>doc_create_document</code></td><td>Word</td><td>Creates a document and saves it at the given path (.docx).</td></tr>
+        <tr><td><code>doc_delete_paragraph</code></td><td>Word</td><td>Deletes a paragraph, or several in a row, from the given index.</td></tr>
+        <tr><td><code>doc_export_pdf</code></td><td>Word</td><td>Exports the document to PDF; does not change the file open in Word.</td></tr>
+        <tr><td><code>doc_find_replace</code></td><td>Word</td><td>Replaces every occurrence of the text in the document.</td></tr>
+        <tr><td><code>doc_format_table</code></td><td>Word</td><td>Formats an inserted table. &#x27;style&#x27; takes language-independent names:</td></tr>
+        <tr><td><code>doc_get_document_info</code></td><td>Word</td><td>Returns page, word and character counts, the template name and file path.</td></tr>
+        <tr><td><code>doc_get_full_text</code></td><td>Word</td><td>Returns the whole document text.</td></tr>
+        <tr><td><code>doc_get_outline</code></td><td>Word</td><td>Returns the heading structure (level, text, paragraph index).</td></tr>
+        <tr><td><code>doc_get_paragraph</code></td><td>Word</td><td>Reads paragraphs with their style, alignment and outline level.</td></tr>
+        <tr><td><code>doc_insert_footer</code></td><td>Word</td><td>Sets the footer text.</td></tr>
+        <tr><td><code>doc_insert_header</code></td><td>Word</td><td>Sets the page header text.</td></tr>
+        <tr><td><code>doc_insert_image</code></td><td>Word</td><td>Inserts an image: &#x27;inline&#x27; in the text or &#x27;float&#x27; as a floating object.</td></tr>
+        <tr><td><code>doc_insert_page_break</code></td><td>Word</td><td>Inserts a hard page break at the end of the document.</td></tr>
+        <tr><td><code>doc_insert_paragraph</code></td><td>Word</td><td>Inserts a paragraph at a specific place. Without &#x27;paragraph_index&#x27; it</td></tr>
+        <tr><td><code>doc_insert_section_break</code></td><td>Word</td><td>Podzial sekcji: next_page, continuous, even_page, odd_page. Sekcje maja</td></tr>
+        <tr><td><code>doc_insert_table</code></td><td>Word</td><td>Inserts a bordered table; without &#x27;position&#x27; it goes to the end of the document.</td></tr>
+        <tr><td><code>doc_insert_table_of_contents</code></td><td>Word</td><td>Inserts a table of contents built from heading styles.</td></tr>
+        <tr><td><code>doc_insert_table_of_figures</code></td><td>Word</td><td>Spis rysunkow albo tabel zbudowany z podpisow. &#x27;position&#x27;: start, end albo</td></tr>
+        <tr><td><code>doc_open_document</code></td><td>Word</td><td>Opens an existing document; if already open, activates its window.</td></tr>
+        <tr><td><code>doc_save</code></td><td>Word</td><td>Saves the current document; with &#x27;path&#x27; saves it as a new file.</td></tr>
+        <tr><td><code>doc_set_columns</code></td><td>Word</td><td>Sets the number of text columns in a section (newspaper layout); &#x27;spacing&#x27; in points.</td></tr>
+        <tr><td><code>doc_set_default_font</code></td><td>Word</td><td>Changes the Normal style font - the basis of the whole document, instead</td></tr>
+        <tr><td><code>doc_set_heading_numbering</code></td><td>Word</td><td>Wlacza numeracje rozdzialow 1., 1.1, 1.1.1 powiazana ze stylami naglowkow.</td></tr>
+        <tr><td><code>doc_set_page_margins</code></td><td>Word</td><td>Sets page margins. &#x27;unit&#x27;: cm, mm, in or pt.</td></tr>
+        <tr><td><code>doc_set_page_setup</code></td><td>Word</td><td>Orientacja strony (portrait/landscape), margines na oprawe (&#x27;gutter&#x27;)</td></tr>
+        <tr><td><code>doc_set_paragraph_alignment</code></td><td>Word</td><td>Sets paragraph alignment: left, center, right or justify.</td></tr>
+        <tr><td><code>doc_set_paragraph_format</code></td><td>Word</td><td>Interlinia, wciecia i lamanie akapitow - podstawa skladu pracy dyplomowej.</td></tr>
+        <tr><td><code>doc_set_text_style</code></td><td>Word</td><td>Formats the font of a whole paragraph (indexes from doc_get_outline).</td></tr>
+        <tr><td><code>doc_update_fields</code></td><td>Word</td><td>Odswieza pola: spis tresci, spisy rysunkow i numeracje podpisow. Spis tresci</td></tr>
+        <tr><td><code>ppt_add_animation</code></td><td>PowerPoint</td><td>Animates a shape on a slide. &#x27;shape_id&#x27; is an id, a shape name or the</td></tr>
+        <tr><td><code>ppt_add_bullet_list</code></td><td>PowerPoint</td><td>Fills a placeholder with a bulleted list.</td></tr>
+        <tr><td><code>ppt_add_chart</code></td><td>PowerPoint</td><td>Inserts a chart with data.</td></tr>
+        <tr><td><code>ppt_add_hyperlink</code></td><td>PowerPoint</td><td>Attaches a link to a shape: an external address (&#x27;url&#x27;) or a jump to a</td></tr>
+        <tr><td><code>ppt_add_image</code></td><td>PowerPoint</td><td>Inserts an image on the slide. Without width/height keeps the proportions.</td></tr>
+        <tr><td><code>ppt_add_media</code></td><td>PowerPoint</td><td>Inserts video or audio embedded in the presentation. &#x27;autoplay=True&#x27;</td></tr>
+        <tr><td><code>ppt_add_section</code></td><td>PowerPoint</td><td>Creates a section starting at the given slide.</td></tr>
+        <tr><td><code>ppt_add_shape</code></td><td>PowerPoint</td><td>Inserts a shape: rectangle, rounded_rectangle, oval, triangle, diamond,</td></tr>
+        <tr><td><code>ppt_add_slide</code></td><td>PowerPoint</td><td>Adds a slide with the chosen layout.</td></tr>
+        <tr><td><code>ppt_add_smartart</code></td><td>PowerPoint</td><td>Inserts a SmartArt diagram and fills it with text. &#x27;layout&#x27; is a key</td></tr>
+        <tr><td><code>ppt_add_table</code></td><td>PowerPoint</td><td>Inserts a table and fills it with data (the first row is bolded).</td></tr>
+        <tr><td><code>ppt_add_textbox</code></td><td>PowerPoint</td><td>Inserts a text box. Coordinates in points, a 16:9 slide is 960x540 pt.</td></tr>
+        <tr><td><code>ppt_align_shapes</code></td><td>PowerPoint</td><td>Aligns shapes: left, center, right, top, middle, bottom.</td></tr>
+        <tr><td><code>ppt_apply_theme</code></td><td>PowerPoint</td><td>Applies a theme from a .thmx/.potx file or from the Office theme gallery.</td></tr>
+        <tr><td><code>ppt_close</code></td><td>PowerPoint</td><td>Closes the current presentation, saving changes by default.</td></tr>
+        <tr><td><code>ppt_copy_slide_to</code></td><td>PowerPoint</td><td>Copies a slide into another, existing presentation. Without &#x27;position&#x27;</td></tr>
+        <tr><td><code>ppt_create_presentation</code></td><td>PowerPoint</td><td>Creates a presentation and saves it at the given path (.pptx).</td></tr>
+        <tr><td><code>ppt_delete_section</code></td><td>PowerPoint</td><td>Deletes a section; &#x27;delete_slides=True&#x27; also removes its slides.</td></tr>
+        <tr><td><code>ppt_delete_shape</code></td><td>PowerPoint</td><td>Deletes a shape from the slide; &#x27;shape_id&#x27; is an id, a shape name or the</td></tr>
+        <tr><td><code>ppt_delete_slide</code></td><td>PowerPoint</td><td>Deletes the slide with the given number (counting from 1).</td></tr>
+        <tr><td><code>ppt_distribute_shapes</code></td><td>PowerPoint</td><td>Spreads at least three shapes at equal intervals - horizontal</td></tr>
+        <tr><td><code>ppt_duplicate_slide</code></td><td>PowerPoint</td><td>Duplicates a slide - the copy lands right after the original.</td></tr>
+        <tr><td><code>ppt_export_pdf</code></td><td>PowerPoint</td><td>Exports the whole presentation to PDF; does not change the file open</td></tr>
+        <tr><td><code>ppt_export_slide</code></td><td>PowerPoint</td><td>Saves the slide as an image - the format follows the file extension</td></tr>
+        <tr><td><code>ppt_find_replace_text</code></td><td>PowerPoint</td><td>Replaces text in the presentation (including tables and shape groups).</td></tr>
+        <tr><td><code>ppt_format_chart</code></td><td>PowerPoint</td><td>Tunes a chart to the slide colours: series colours, axis and legend text</td></tr>
+        <tr><td><code>ppt_get_presentation_info</code></td><td>PowerPoint</td><td>Returns slide count, slide size, theme name and file path.</td></tr>
+        <tr><td><code>ppt_get_slide_content</code></td><td>PowerPoint</td><td>Returns full slide content: shapes, their positions, text and notes.</td></tr>
+        <tr><td><code>ppt_get_theme</code></td><td>PowerPoint</td><td>Returns the presentation theme&#x27;s colour palette and fonts.</td></tr>
+        <tr><td><code>ppt_group_shapes</code></td><td>PowerPoint</td><td>Groups shapes - from now on they move, scale and animate as one.</td></tr>
+        <tr><td><code>ppt_list_animations</code></td><td>PowerPoint</td><td>Returns the slide&#x27;s animations in playback order plus its transition.</td></tr>
+        <tr><td><code>ppt_list_sections</code></td><td>PowerPoint</td><td>Presentation sections with their first slide and slide count.</td></tr>
+        <tr><td><code>ppt_list_slides</code></td><td>PowerPoint</td><td>Slide list with titles, layout names and shape counts.</td></tr>
+        <tr><td><code>ppt_list_smartart_layouts</code></td><td>PowerPoint</td><td>SmartArt layouts: key, name and category. NOTE: &#x27;name&#x27; is localised</td></tr>
+        <tr><td><code>ppt_open_presentation</code></td><td>PowerPoint</td><td>Opens an existing presentation; if already open, activates its window.</td></tr>
+        <tr><td><code>ppt_reorder_slide</code></td><td>PowerPoint</td><td>Moves a slide to another position in the presentation.</td></tr>
+        <tr><td><code>ppt_save</code></td><td>PowerPoint</td><td>Saves the current presentation; with &#x27;path&#x27; saves it as a new file.</td></tr>
+        <tr><td><code>ppt_set_background</code></td><td>PowerPoint</td><td>Sets the slide background - a solid colour (&#x27;#RRGGBB&#x27;) or an image file.</td></tr>
+        <tr><td><code>ppt_set_headers_footers</code></td><td>PowerPoint</td><td>Footer, slide number and date. Without &#x27;slide_index&#x27; covers every slide.</td></tr>
+        <tr><td><code>ppt_set_master_background</code></td><td>PowerPoint</td><td>Sets the background on the slide master - once for the whole deck, instead</td></tr>
+        <tr><td><code>ppt_set_paragraph_format</code></td><td>PowerPoint</td><td>Paragraph typography: line spacing (a multiple, 1.0 = single), gaps</td></tr>
+        <tr><td><code>ppt_set_shape_format</code></td><td>PowerPoint</td><td>Look of an existing shape. &#x27;gradient_from&#x27; + &#x27;gradient_to&#x27; turn on a</td></tr>
+        <tr><td><code>ppt_set_shape_order</code></td><td>PowerPoint</td><td>Changes the shape layer: front (to the top), back (to the bottom),</td></tr>
+        <tr><td><code>ppt_set_shape_position</code></td><td>PowerPoint</td><td>Moves, scales and rotates an existing shape. Coordinates in points</td></tr>
+        <tr><td><code>ppt_set_slide_layout</code></td><td>PowerPoint</td><td>Changes the slide layout - by master layout name or a standard name.</td></tr>
+        <tr><td><code>ppt_set_speaker_notes</code></td><td>PowerPoint</td><td>Sets the speaker notes for the given slide.</td></tr>
+        <tr><td><code>ppt_set_text_style</code></td><td>PowerPoint</td><td>Formats shape text. Get &#x27;shape_id&#x27; from ppt_get_slide_content.</td></tr>
+        <tr><td><code>ppt_set_theme_colors</code></td><td>PowerPoint</td><td>Podmienia kolory w palecie motywu, np.</td></tr>
+        <tr><td><code>ppt_set_theme_fonts</code></td><td>PowerPoint</td><td>Sets theme fonts: &#x27;major&#x27; for headings, &#x27;minor&#x27; for body text.</td></tr>
+        <tr><td><code>ppt_set_title</code></td><td>PowerPoint</td><td>Sets the slide title; if the layout has none, inserts a text box.</td></tr>
+        <tr><td><code>ppt_set_transition</code></td><td>PowerPoint</td><td>Sets the transition between slides; without &#x27;slide_index&#x27; covers the whole</td></tr>
+        <tr><td><code>ppt_slideshow</code></td><td>PowerPoint</td><td>Controls the slide show: &#x27;start&#x27; (optionally from &#x27;slide_index&#x27;), &#x27;stop&#x27;,</td></tr>
+        <tr><td><code>ppt_ungroup_shapes</code></td><td>PowerPoint</td><td>Breaks a group into individual shapes and returns their ids.</td></tr>
+        <tr><td><code>xl_add_chart</code></td><td>Excel</td><td>Inserts a chart based on a data range from the same sheet.</td></tr>
+        <tr><td><code>xl_add_data_validation</code></td><td>Excel</td><td>Data validation. For a dropdown list just pass &#x27;values&#x27; (a list of</td></tr>
+        <tr><td><code>xl_add_pivot_table</code></td><td>Excel</td><td>Builds a pivot table from a source range (the first row is the headers).</td></tr>
+        <tr><td><code>xl_add_sheet</code></td><td>Excel</td><td>Adds a sheet with the given name; without &#x27;index&#x27; it goes to the end.</td></tr>
+        <tr><td><code>xl_apply_conditional_formatting</code></td><td>Excel</td><td>Dodaje formatowanie warunkowe.</td></tr>
+        <tr><td><code>xl_clear_range</code></td><td>Excel</td><td>Clears a range - values only by default, optionally formatting too.</td></tr>
+        <tr><td><code>xl_close</code></td><td>Excel</td><td>Closes the current workbook, saving changes by default.</td></tr>
+        <tr><td><code>xl_copy_range</code></td><td>Excel</td><td>Copies a range to the same or another place. &#x27;paste&#x27; is all, values</td></tr>
+        <tr><td><code>xl_create_table</code></td><td>Excel</td><td>Turns a range into a native Excel table (with filters and a style).</td></tr>
+        <tr><td><code>xl_create_workbook</code></td><td>Excel</td><td>Creates a new workbook and saves it at the given path (.xlsx).</td></tr>
+        <tr><td><code>xl_delete_columns</code></td><td>Excel</td><td>Deletes columns; &#x27;start_col&#x27; takes a letter (&quot;C&quot;) or a number (3).</td></tr>
+        <tr><td><code>xl_delete_rows</code></td><td>Excel</td><td>Deletes rows, pulling the rest up.</td></tr>
+        <tr><td><code>xl_delete_sheet</code></td><td>Excel</td><td>Deletes the sheet with the given name.</td></tr>
+        <tr><td><code>xl_export_pdf</code></td><td>Excel</td><td>Exports the workbook, a single sheet or a range to PDF.</td></tr>
+        <tr><td><code>xl_export_range_image</code></td><td>Excel</td><td>Saves a range as an image (.png/.jpg/.gif). Use it to look at the</td></tr>
+        <tr><td><code>xl_find_replace</code></td><td>Excel</td><td>Replaces text; without &#x27;sheet&#x27; it walks every sheet.</td></tr>
+        <tr><td><code>xl_format_chart</code></td><td>Excel</td><td>Tunes a chart in the sheet: series colours, axis and legend text colour,</td></tr>
+        <tr><td><code>xl_freeze_panes</code></td><td>Excel</td><td>Freezes rows and columns above and to the left of a cell (e.g. &quot;A2&quot;).</td></tr>
+        <tr><td><code>xl_get_cell_formula</code></td><td>Excel</td><td>Returns range formulas (not computed values) along with the results.</td></tr>
+        <tr><td><code>xl_get_range_values</code></td><td>Excel</td><td>Reads range values (e.g. &quot;A1:D10&quot;) as a 2D array.</td></tr>
+        <tr><td><code>xl_get_used_range</code></td><td>Excel</td><td>Returns the actually filled area of the sheet along with its data.</td></tr>
+        <tr><td><code>xl_get_workbook_info</code></td><td>Excel</td><td>Returns the sheet list with their data ranges, the active sheet and file path.</td></tr>
+        <tr><td><code>xl_insert_columns</code></td><td>Excel</td><td>Inserts columns; &#x27;start_col&#x27; takes a letter (&quot;C&quot;) or a number (3).</td></tr>
+        <tr><td><code>xl_insert_rows</code></td><td>Excel</td><td>Inserts rows, pushing existing ones down.</td></tr>
+        <tr><td><code>xl_merge_cells</code></td><td>Excel</td><td>Merges the cells of a range, centring the content by default.</td></tr>
+        <tr><td><code>xl_open_workbook</code></td><td>Excel</td><td>Opens an existing workbook; if already open, activates its window.</td></tr>
+        <tr><td><code>xl_rename_sheet</code></td><td>Excel</td><td>Renames a sheet.</td></tr>
+        <tr><td><code>xl_save</code></td><td>Excel</td><td>Saves the current workbook; with &#x27;path&#x27; saves it as a new file.</td></tr>
+        <tr><td><code>xl_set_autofilter</code></td><td>Excel</td><td>Turns AutoFilter on or off; without &#x27;range_ref&#x27; covers the used range.</td></tr>
+        <tr><td><code>xl_set_cell</code></td><td>Excel</td><td>Writes a value into a cell (e.g. sheet=&quot;Budget&quot;, cell_ref=&quot;B2&quot;).</td></tr>
+        <tr><td><code>xl_set_cell_format</code></td><td>Excel</td><td>Formats a range of cells.</td></tr>
+        <tr><td><code>xl_set_column_width</code></td><td>Excel</td><td>Sets column width; width=&quot;auto&quot; fits it to the contents.</td></tr>
+        <tr><td><code>xl_set_formula</code></td><td>Excel</td><td>Writes a formula (e.g. &quot;=SUM(A1:A10)&quot;) and returns the computed result.</td></tr>
+        <tr><td><code>xl_set_range</code></td><td>Excel</td><td>Pastes a whole matrix at once, starting at &#x27;start_cell&#x27;.</td></tr>
+        <tr><td><code>xl_set_row_height</code></td><td>Excel</td><td>Row height in points; height=&quot;auto&quot; fits it to the content.</td></tr>
+        <tr><td><code>xl_sort_range</code></td><td>Excel</td><td>Sorts a range by column &#x27;sort_by&#x27; (letter, number or cell address).</td></tr>
+      </tbody></table></div>
+      <noscript><p class="small">JavaScript가 꺼져 있어도 전체 목록을 볼 수 있습니다. 검색만 사용할 수 없습니다.</p></noscript>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>문제 해결</h2>
+      <div class="table-wrap"><table><thead><tr><th>증상</th><th>확인할 내용</th></tr></thead><tbody>
+        <tr><td>설치 중 wheel을 찾지 못함</td><td>Python 3.11 64비트인지, <code>wheelhouse/win_amd64_py311</code> 폴더 전체를 복사했는지 확인합니다. 설치 명령에 <code>--no-index</code>가 있어야 합니다.</td></tr>
+        <tr><td>도구가 보이지 않음</td><td>MCP 설정의 Python·<code>server.py</code> 절대 경로를 확인하고 클라이언트를 다시 시작합니다. <code>verify-windows.py</code>도 실행합니다.</td></tr>
+        <tr><td><code>BridgeUnavailable</code></td><td>로컬 포트 <code>8765</code> 사용 여부를 확인합니다. 브리지는 첫 호출에 자동 시작됩니다. 포트를 바꿀 때는 <code>OFFICE_BRIDGE_PORT</code>를 동일하게 적용합니다.</td></tr>
+        <tr><td><code>ComConnectionError</code> 또는 시간 초과</td><td>Office가 설치되어 있는지, 저장·보안 확인 같은 대화상자가 열려 있는지 확인합니다. 대화상자를 닫고 다시 시도합니다.</td></tr>
+        <tr><td><code>DocumentNotFoundError</code></td><td>파일·대상 폴더가 존재하는지, 문서가 열려 있는지, Windows 절대 경로인지 확인합니다.</td></tr>
+        <tr><td>PowerPoint 차트가 느림</td><td>첫 차트 호출은 Excel이 함께 시작되어 시간이 걸릴 수 있습니다. 필요하면 브리지 시간 제한을 높이거나 Excel을 먼저 엽니다.</td></tr>
+        <tr><td>코드를 바꿨는데 반영되지 않음</td><td>브리지는 MCP 클라이언트보다 오래 실행될 수 있습니다. 로컬 브리지 프로세스를 종료하고 클라이언트를 다시 시작합니다.</td></tr>
+      </tbody></table></div>
+      <p class="small">브리지는 기본적으로 localhost에서만 듣고 별도 인증이 없습니다. 외부 네트워크 인터페이스에 포트를 열지 마세요. 상세한 Office 특이 사항은 <a href="docs/GOTCHAS.md">원본 오류·주의 사항</a>에 있습니다.</p>
+    </section>
+
+    <section id="limits">
+      <h2>범위와 출처</h2>
+      <div class="callout-grid">
+        <div class="note"><strong>이 패키지의 확인 범위</strong><p>모의 COM 테스트 367개가 통과했고, 동봉한 wheel만으로 Python 의존성이 해결되는 것을 확인했습니다. 실제 Office COM 실행과 PowerShell 설치는 Windows PC에서 최종 확인해야 합니다.</p></div>
+        <div class="note"><strong>원본과 변경</strong><p><a href="https://github.com/JulianPoleszczuk/office-mcp">JulianPoleszczuk/office-mcp</a>의 커밋 <code>421b1a6</code>을 바탕으로 했습니다. 인터넷 사진 검색 도구를 제거하고 오프라인 wheel·설치 스크립트를 추가했습니다. <a href="UPSTREAM_README.md">원본 README</a>를 보관했습니다.</p></div>
+      </div>
+      <p>이 안내서는 폴더 안에서 독립적으로 열 수 있습니다. 오프라인에서는 외부 GitHub 링크만 열리지 않으며, 설치와 사용 지침은 이 파일과 함께 복사됩니다.</p>
+    </section>
+    <p class="footer">Office COM MCP · 한국어 사용설명서 · 로컬 파일로 열어도 동작합니다.</p>
+  </main>
+</div>
+<script>
+  (() => {
+    const input = document.getElementById('tool-filter');
+    const rows = [...document.querySelectorAll('#tool-table tbody tr')];
+    const output = document.getElementById('visible-tools');
+    document.getElementById('total-tools').textContent = String(rows.length);
+    const update = () => {
+      const q = input.value.trim().toLocaleLowerCase();
+      let visible = 0;
+      for (const row of rows) {
+        const show = row.textContent.toLocaleLowerCase().includes(q);
+        row.classList.toggle('hidden-row', !show);
+        if (show) visible++;
+      }
+      output.textContent = q ? `${visible} / ${rows.length}개 표시` : `전체 ${rows.length}개 표시`;
+    };
+    input.addEventListener('input', update);
+    update();
+  })();
+</script>
+</body>
+</html>
