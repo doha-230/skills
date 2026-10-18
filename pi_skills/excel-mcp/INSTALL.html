@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Excel MCP 폐쇄망 설치 설명서</title>
+  <style>
+    :root { color-scheme: light; --ink:#182529; --muted:#506268; --line:#d6e1df; --teal:#006a61; --teal-dark:#06483f; --pale:#e7f5f0; --cream:#fff8e8; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:#f4f8f7; color:var(--ink); font:16px/1.65 system-ui,-apple-system,"Malgun Gothic","Noto Sans KR",sans-serif; }
+    a { color:var(--teal-dark); text-underline-offset:3px; }
+    .wrap { max-width:1040px; margin:auto; padding:0 24px; }
+    header { background:linear-gradient(125deg,#073b38,#08776a); color:white; padding:54px 0 45px; }
+    header a { color:#d8fff1; }
+    .eyebrow { font-size:.82rem; font-weight:750; letter-spacing:.12em; text-transform:uppercase; color:#bce7d7; }
+    h1 { font-size:clamp(2rem,5vw,3.1rem); line-height:1.2; letter-spacing:-.04em; margin:.5rem 0 1rem; }
+    h2 { margin:0 0 1rem; font-size:1.55rem; letter-spacing:-.025em; }
+    h3 { margin:1.6rem 0 .5rem; font-size:1.08rem; }
+    p { margin:.6rem 0 1rem; }
+    .lead { max-width:760px; font-size:1.1rem; color:#e1f3ed; }
+    .tag { display:inline-block; margin:10px 8px 0 0; padding:4px 11px; border:1px solid #89b9ad; border-radius:999px; color:#ebfff7; font-size:.84rem; }
+    nav { background:white; border-bottom:1px solid var(--line); }
+    nav .wrap { display:flex; flex-wrap:wrap; gap:8px 24px; padding-top:13px; padding-bottom:13px; }
+    nav a { font-weight:650; text-decoration:none; font-size:.91rem; }
+    main { padding:28px 0 62px; }
+    section { background:white; border:1px solid var(--line); border-radius:16px; padding:28px 32px; margin:20px 0; box-shadow:0 2px 12px #12372e08; }
+    .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .summary div { background:var(--pale); border-radius:10px; padding:14px 16px; }
+    .summary strong { display:block; color:var(--teal-dark); }
+    .note { background:var(--cream); border-left:4px solid #c68416; border-radius:6px; padding:12px 16px; margin:16px 0; }
+    .good { background:var(--pale); border-left:4px solid var(--teal); border-radius:6px; padding:12px 16px; margin:16px 0; }
+    code { font-family:Consolas,"Cascadia Code",monospace; font-size:.92em; overflow-wrap:anywhere; }
+    pre { background:#102825; color:#e8fff5; padding:17px 19px; border-radius:10px; overflow:auto; line-height:1.55; }
+    pre code { overflow-wrap:normal; }
+    table { border-collapse:collapse; width:100%; margin:16px 0; }
+    th,td { border-bottom:1px solid var(--line); text-align:left; padding:10px 8px; vertical-align:top; }
+    th { background:#f2f8f5; }
+    ol,ul { padding-left:1.4rem; }
+    li { margin:.4rem 0; }
+    .small { color:var(--muted); font-size:.9rem; }
+    footer { padding:0 0 35px; color:var(--muted); font-size:.88rem; }
+    @media (max-width:700px) { .summary { grid-template-columns:1fr; } section { padding:22px 19px; } }
+    @media print { body { background:white; } header { background:white; color:black; padding:10px 0; } .lead,.eyebrow { color:black; } .tag,nav { display:none; } section { box-shadow:none; break-inside:avoid; } a { color:black; } }
+  </style>
+</head>
+<body>
+  <header><div class="wrap">
+    <div class="eyebrow">Pi + Microsoft Excel · 오프라인 설치</div>
+    <h1>Excel MCP 폐쇄망 설치 설명서</h1>
+    <p class="lead">인터넷 없이 Windows PC의 Excel을 Pi 코딩 에이전트에서 제어하기 위한 파일 구성, 설치, 검증 및 운영 범위를 안내합니다.</p>
+    <span class="tag">ExcelMcp v2.4.1</span><span class="tag">Windows x64</span><span class="tag">HTML 단일 파일</span>
+  </div></header>
+  <nav aria-label="목차"><div class="wrap">
+    <a href="#requirements">준비 사항</a><a href="#files">파일 구성</a><a href="#install">설치</a><a href="#verify">동작 확인</a><a href="#network">외부 통신</a><a href="#troubleshooting">문제 해결</a>
+  </div></nav>
+  <main class="wrap">
+    <section aria-label="요약">
+      <div class="summary">
+        <div><strong>실행 위치</strong>Excel이 설치된 Windows 사용자 세션</div>
+        <div><strong>설치 방식</strong>원본 ZIP 해시 확인 후 로컬 실행 파일 등록</div>
+        <div><strong>인터넷 사용</strong>설치·기본 Excel 작업에는 불필요</div>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <h2>1. 준비 사항</h2>
+      <ul>
+        <li>Windows 10 이상, x64 환경, Microsoft Excel 2016 이상 데스크톱 버전.</li>
+        <li>Excel을 실행할 수 있는 로그인된 <strong>대화형 Windows 데스크톱</strong>. 서버 서비스나 Linux 컨테이너용 도구가 아닙니다.</li>
+        <li>MCP를 지원하는 Pi 코딩 에이전트와 내부에서 동작하는 모델. Pi의 내장 MCP 기능이 있는 버전을 기준으로 설명합니다.</li>
+        <li>배포 ZIP을 외부에서 내려받아 폐쇄망으로 반입할 승인된 수단. 반입 후에는 npm, Node.js, .NET 설치가 필요하지 않습니다.</li>
+      </ul>
+      <div class="note">자연어로 Excel 데이터를 읽게 하면 MCP 도구 결과가 Pi와 Pi에 연결된 모델로 전달됩니다. 모델이 외부 API라면 폐쇄망 운영이 아닙니다. 모델의 연결 대상도 확인하세요.</div>
+    </section>
+
+    <section id="files">
+      <h2>2. 파일 구성과 무결성</h2>
+      <p>저장소의 <code>dist/excel-mcp-pi-offline-2.4.1-windows-x64.zip</code>을 반입합니다. 압축을 풀면 아래처럼 구성됩니다.</p>
+      <pre><code>excel-mcp-offline/
+├─ INSTALL.html
+├─ README.md
+├─ PROVENANCE.md
+├─ LICENSE
+├─ install-pi.ps1
+└─ server/
+   └─ ExcelMcp-MCP-Server-2.4.1-windows.zip</code></pre>
+      <p>내부 <code>server</code> ZIP은 원본 릴리스 파일을 수정하지 않은 상태입니다. 설치 스크립트가 원본 ZIP과 그 안의 실행 파일 모두 SHA-256으로 검증합니다.</p>
+      <table><thead><tr><th>검증 대상</th><th>SHA-256</th></tr></thead><tbody>
+        <tr><td>원본 서버 ZIP</td><td><code>4b7be341694b603e7d2de5633ed9cd366fe246874484392935e2e2fa40e53654</code></td></tr>
+        <tr><td>ZIP 안의 mcp-excel.exe</td><td><code>56f216c19bea45c4ff586cfaf0e4c9f8ff708503173fdc24837bedf0bb7e0ed1</code></td></tr>
+      </tbody></table>
+      <p>배포 ZIP의 해시는 저장소에 있는 같은 이름의 <code>.zip.sha256</code> 파일에서 확인합니다.</p>
+      <pre><code>Get-FileHash .\excel-mcp-pi-offline-2.4.1-windows-x64.zip -Algorithm SHA256</code></pre>
+    </section>
+
+    <section id="install">
+      <h2>3. 설치</h2>
+      <ol>
+        <li>배포 ZIP을 폐쇄망 PC로 복사하고 압축을 풉니다.</li>
+        <li>Windows PowerShell을 열어 <code>install-pi.ps1</code>가 있는 폴더로 이동합니다.</li>
+        <li>아래 명령을 실행합니다. 실행 정책 변경은 현재 PowerShell 프로세스에만 적용됩니다.</li>
+      </ol>
+      <pre><code>Set-ExecutionPolicy -Scope Process Bypass
+.\install-pi.ps1</code></pre>
+      <p>스크립트는 실행 파일을 <code>%LOCALAPPDATA%\Programs\ExcelMcp\mcp-excel.exe</code>에 복사하고, 사용자별 <code>%USERPROFILE%\.pi\agent\mcp.json</code>에 <code>excel-mcp</code>를 등록합니다. 기존 설정 파일은 날짜가 붙은 <code>.bak</code>로 백업한 뒤 다른 서버 항목을 유지합니다.</p>
+      <p>등록 내용에는 <code>EXCELMCP_TELEMETRY_MODE=off</code>가 포함됩니다. 설치가 끝나면 Pi를 다시 시작합니다.</p>
+      <h3>수동 설정이 필요한 경우</h3>
+      <p>Pi 설정 파일의 <code>mcpServers</code> 객체에 아래 항목을 추가할 수 있습니다. 경로의 사용자 이름은 실제 값으로 바꿉니다. JSON에서 백슬래시는 두 번 씁니다.</p>
+      <pre><code>{
+  "mcpServers": {
+    "excel-mcp": {
+      "command": "C:\\Users\\YOUR_NAME\\AppData\\Local\\Programs\\ExcelMcp\\mcp-excel.exe",
+      "env": { "EXCELMCP_TELEMETRY_MODE": "off" }
+    }
+  }
+}</code></pre>
+      <p class="small">이미 <code>mcp.json</code>에 다른 설정이 있다면 파일 전체를 위 예시로 덮어쓰지 말고 <code>excel-mcp</code> 항목만 추가합니다.</p>
+    </section>
+
+    <section id="verify">
+      <h2>4. 동작 확인</h2>
+      <ol>
+        <li>Pi가 실행 중이었다면 다시 시작합니다.</li>
+        <li>PowerShell에서 <code>pi mcp list</code>를 실행하거나 Pi 안에서 <code>/mcp</code>를 열어 <code>excel-mcp</code> 연결 상태를 확인합니다.</li>
+        <li>테스트 파일을 대상으로 “새 Excel 파일을 만들고 A1에 테스트라고 써 줘”라고 요청합니다.</li>
+        <li>Excel에서 파일을 열어 A1 값을 확인합니다.</li>
+      </ol>
+      <div class="good">파일을 저장하거나 수정하는 요청은 실제 Excel 파일에 반영됩니다. 테스트에는 복사본이나 새 파일을 사용하세요.</div>
+    </section>
+
+    <section id="network">
+      <h2>5. 폐쇄망 운영 범위</h2>
+      <table><thead><tr><th>항목</th><th>운영 기준</th></tr></thead><tbody>
+        <tr><td>Excel MCP 기본 작업</td><td>로컬 Excel COM API로 실행됩니다. 원본 실행 파일을 직접 실행하므로 npm 다운로드가 없습니다.</td></tr>
+        <tr><td>사용 통계</td><td>배포판의 기본 설정은 Azure 전송을 시도할 수 있습니다. 패키지의 Pi 설정은 <code>EXCELMCP_TELEMETRY_MODE=off</code>를 지정합니다.</td></tr>
+        <tr><td>Pi 모델</td><td>폐쇄망 안에서 동작하는 모델 또는 내부망 모델 엔드포인트를 사용해야 합니다.</td></tr>
+        <tr><td>선택 기능</td><td>Python in Excel은 Microsoft 클라우드가 필요합니다. 원격 M/DAX 포맷팅과 외부 데이터 연결도 네트워크를 사용할 수 있으므로 폐쇄망에서는 사용하지 않습니다.</td></tr>
+        <tr><td>Excel·Office</td><td>Excel 설치와 라이선스 활성화는 별도로 준비해야 합니다. 조직의 Office 네트워크 정책을 따릅니다.</td></tr>
+      </tbody></table>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>6. 문제 해결</h2>
+      <ul>
+        <li><strong>해시 오류:</strong> 파일이 손상되었거나 다른 버전입니다. 원본 파일과 배포 ZIP을 다시 확인하세요.</li>
+        <li><strong>Pi에서 연결되지 않음:</strong> <code>pi mcp list</code> 출력, 설치된 실행 파일 경로, <code>mcp.json</code>의 JSON 형식을 확인하세요. Pi의 MCP 기능이 켜져 있어야 합니다.</li>
+        <li><strong>Excel 작업 실패:</strong> 해당 사용자로 Excel을 직접 열 수 있는지, 로그인된 데스크톱 세션인지 확인하세요. 열려 있는 대상 통합 문서는 저장하고 닫은 뒤 다시 시도하세요.</li>
+        <li><strong>일부 기능만 실패:</strong> DAX 쿼리 실행에는 MSOLAP 등 별도 구성 요소가 필요할 수 있습니다. 외부 연결에 의존하는 통합 문서도 연결 대상이 차단되면 새로 고침할 수 없습니다.</li>
+      </ul>
+      <p class="small">이 패키지는 Linux 환경에서 파일 구조와 해시를 검증했습니다. Windows Excel과 Pi의 실제 연결·작업 검증은 대상 PC에서 위 절차로 수행해야 합니다.</p>
+    </section>
+
+    <section id="sources">
+      <h2>원본 자료</h2>
+      <p>문서 내용은 <a href="https://github.com/sbroenne/mcp-server-excel/releases/tag/v2.4.1">ExcelMcp v2.4.1 릴리스</a>, <a href="https://github.com/sbroenne/mcp-server-excel/blob/main/docs/INSTALLATION-MCP-SERVER.md">ExcelMcp 설치 안내</a>, <a href="https://github.com/sbroenne/mcp-server-excel/blob/main/PRIVACY.md">개인정보 정책</a>, <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/mcp.md">Pi MCP 설명서</a>를 참고했습니다. 링크는 출처 확인용이며 이 HTML 파일을 열거나 기본 설치를 진행할 때 인터넷에 접속하지 않습니다.</p>
+    </section>
+  </main>
+  <footer class="wrap">문서 기준: 2026-10-15 · ExcelMcp v2.4.1 · 폐쇄망 반입용</footer>
+</body>
+</html>
