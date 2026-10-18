@@ -5,8 +5,9 @@ import sys
 
 
 def main() -> int:
-    if sys.platform != "win32" or sys.version_info[:2] != (3, 11) or struct.calcsize("P") != 8:
-        print("Windows 및 Python 3.11 64비트가 필요합니다.", file=sys.stderr)
+    if (sys.platform != "win32" or sys.version_info[:2] != (3, 11)
+            or struct.calcsize("P") != 8 or sys.prefix != sys.base_prefix):
+        print("Windows의 글로벌 Python 3.11 64비트가 필요합니다.", file=sys.stderr)
         return 1
 
     import pythoncom  # noqa: F401

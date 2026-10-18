@@ -7,7 +7,7 @@ Windows에 설치된 Microsoft Word, PowerPoint, Excel을 COM으로 제어하는
 ## 준비물
 
 - Windows 10/11 64비트, 데스크톱 Microsoft Office 2019 이상 (Word, PowerPoint, Excel)
-- Python 3.11 64비트와 Python Launcher(`py`), `pip`/`venv` 포함
+- 글로벌 Python 3.11 64비트와 `pip` 포함. 기본 설치 스크립트는 Python Launcher(`py`)를 사용합니다.
 - PowerShell과, MCP stdio 서버를 실행할 클라이언트
 
 Python 및 Office 설치 프로그램은 이 폴더에 포함되지 않습니다. 폐쇄망 PC에 사전에 설치하거나 별도 설치 매체로 반입해야 합니다. 동봉된 `wheelhouse/win_amd64_py311`은 **Python 3.11 64비트 Windows 전용**입니다.
@@ -16,26 +16,26 @@ Python 및 Office 설치 프로그램은 이 폴더에 포함되지 않습니다
 
 1. `office-com` 폴더 전체를 폐쇄망 PC에 복사합니다. `wheelhouse`를 빠뜨리지 마세요.
 2. PowerShell에서 이 폴더로 이동하고 `powershell -ExecutionPolicy Bypass -File .\install-offline.ps1`을 실행합니다. Python Launcher가 없다면 `-PythonExe "C:\경로\python.exe"`를 추가합니다.
-3. 설치 스크립트는 wheel 해시를 확인하고, `pip --no-index`로 로컬 wheel만 설치한 뒤 pywin32를 등록하고 도구 등록을 확인합니다. 인터넷에 접속하지 않습니다.
-4. MCP 클라이언트에 아래 명령을 등록합니다. 경로는 실제 설치 위치의 **절대 경로**로 바꿉니다.
+3. 설치 스크립트는 wheel 해시를 확인하고, 사용자별 패키지 경로를 비활성화한 상태에서 선택한 **글로벌 Python**에 `pip --no-index`로 로컬 wheel만 설치합니다. 이어서 pywin32를 등록하고 도구 등록을 확인합니다. 가상환경을 만들지 않으며 인터넷에 접속하지 않습니다. 해당 Python에 설치할 권한이 필요합니다.
+4. MCP 클라이언트에 아래 명령을 등록합니다. `command`는 설치 완료 메시지의 Python 실행 파일 경로로, `args`는 실제 폴더의 **절대 경로**로 바꿉니다.
 
 ```json
 {
   "mcpServers": {
     "office-com": {
-      "command": "C:\\path\\to\\office-com\\.venv\\Scripts\\python.exe",
+      "command": "C:\\Python311\\python.exe",
       "args": ["C:\\path\\to\\office-com\\server.py"],
-      "env": {"PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
+      "env": {"PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8", "PYTHONNOUSERSITE": "1"}
     }
   }
 }
 ```
 
-클라이언트마다 MCP 설정 파일 위치와 형식이 다릅니다. 실행 명령은 `.venv\Scripts\python.exe server.py`이며 stdio 방식입니다. 실행 중 표준 출력은 MCP 전용이므로 로그는 표준 오류를 사용합니다.
+클라이언트마다 MCP 설정 파일 위치와 형식이 다릅니다. 실행 명령은 설치에 사용한 글로벌 `python.exe`와 `server.py`이며 stdio 방식입니다. 실행 중 표준 출력은 MCP 전용이므로 로그는 표준 오류를 사용합니다. 전역 패키지 버전은 같은 Python을 쓰는 다른 프로그램에도 영향을 줄 수 있습니다.
 
 ## 확인
 
-- `.\.venv\Scripts\python.exe .\verify-windows.py`로 설치 및 세 앱의 MCP 도구 등록을 확인합니다.
+- `py -3.11 -s .\verify-windows.py`로 설치 및 세 앱의 MCP 도구 등록을 확인합니다. Launcher가 없다면 설치에 사용한 `python.exe`로 실행하세요.
 - MCP 클라이언트에서 `office_status`를 호출하면 브리지와 앱 연결 상태를 볼 수 있습니다. 이 호출은 Office 앱을 열지 않습니다.
 - 실제 COM 동작은 Office에서 테스트 문서를 열고 `doc_get_document_info`, `ppt_get_presentation_info`, `xl_get_workbook_info` 같은 읽기 도구로 확인합니다. 값이 있는 문서에서 실행하고, 편집 도구를 호출하면 현재 문서가 바뀔 수 있습니다.
 

@@ -59,8 +59,8 @@ def ensure_windows() -> None:
         )
     if not COM_AVAILABLE:
         raise ComConnectionError(
-            "Brak pywin32. Zainstaluj zaleznosci: pip install -r requirements.txt "
-            "then run python Scripts/pywin32_postinstall.py -install"
+            "pywin32 is missing. Run install-offline.ps1 with global Python 3.11 "
+            "and check the pywin32 post-install step."
         )
 
 
