@@ -26,8 +26,8 @@
 | 도구 | 용도 | 배포 파일 | 설명서 |
 | --- | --- | --- | --- |
 | Excel MCP | Windows의 실제 Excel을 Pi MCP 도구로 제어 | [Windows x64 오프라인 ZIP](dist/excel-mcp-pi-offline-2.4.1-windows-x64.zip) | [한국어 HTML 설명서](excel-mcp/INSTALL.html) |
-| Pi 권한 자동 심사 | 폐쇄망에서 Pi 권한 시스템과 자동 심사 확장 사용 | [오프라인 ZIP](dist/pi-permission-offline-files.zip) | ZIP 안의 `설정설명서.html`, `README-KO.txt` |
+| Pi 권한 자동 심사 | 폐쇄망에서 Pi 권한 시스템과 자동 심사 확장 사용 | [오프라인 ZIP](../pi-permission-offline-files.zip) | ZIP 안의 `설정설명서.html`, `README-KO.txt` |
 
 Excel MCP 패키지에는 원본 `sbroenne/mcp-server-excel` v2.4.1 릴리스 ZIP, 무결성 검사·Pi 설정 스크립트, 원본 MIT 라이선스가 들어 있습니다. Windows 10 이상, Excel 2016 이상, 대화형 데스크톱과 MCP를 지원하는 Pi가 필요합니다. [원본 및 해시](excel-mcp/PROVENANCE.md)를 참고하세요.
 
-Pi 권한 자동 심사 ZIP에는 `@mzwing/pi-permission-auto-review` 0.9.2와 `@gotgenes/pi-permission-system` 41.0.0 및 실행 의존성이 들어 있습니다. Node.js 24 이상과 Pi 1.3.0 이상이 필요합니다. 폐쇄망에서는 등록된 로컬 모델을 심사 모델로 지정해야 합니다. 설치·설정 방법과 지원 범위는 ZIP 안의 설명서를 확인하세요. ZIP 해시는 [SHA-256 파일](dist/pi-permission-offline-files.zip.sha256)로 검증할 수 있습니다.
+Pi 권한 자동 심사 ZIP에는 `@mzwing/pi-permission-auto-review` 0.9.2와 `@gotgenes/pi-permission-system` 41.0.0 및 실행 의존성이 들어 있습니다. Node.js 24 이상과 Pi 1.3.0 이상이 필요합니다. 폐쇄망에서는 등록된 로컬 모델을 심사 모델로 지정해야 합니다. 설치·설정 방법과 지원 범위는 ZIP 안의 설명서를 확인하세요. ZIP 해시는 [SHA-256 파일](../pi-permission-offline-files.zip.sha256)로 검증할 수 있습니다.
