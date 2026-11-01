@@ -19,3 +19,17 @@ SHA-256: `50a2fedf234199e3319cdd6b89c4f0aea601a19fe48259c6e3000883f0d2c6f0`
 ```sh
 cat dsh-latest-windows-x64.exe.001 dsh-latest-windows-x64.exe.002 dsh-latest-windows-x64.exe.003 > dsh-latest-windows-x64.exe
 ```
+
+## 추가 업로드 파일 (2026-11-01)
+
+- `deepseek-harness-master.zip`: 사용자가 공유한 소스 ZIP 원본.
+- `dsh-sanitized.7z.001`부터 `dsh-sanitized.7z.007`: 사용자가 공유한 `.dsh.7z`에서 `.credentials.yaml` 인증 정보 파일을 제외한 사본을 분할한 파일. 7개와 `restore-dsh-archive.cmd`를 같은 폴더에 다운로드하고 배치 파일을 실행하면 `dsh-sanitized.7z`가 복원됩니다.
+- 함께 공유된 `dsh-latest-windows-x64.exe`는 SHA-256 비교 결과 기존 설치 파일과 같아 기존 분할 파일을 사용합니다.
+
+복원한 파일의 SHA-256은 `SHA256SUMS.txt`에서 확인할 수 있습니다.
+
+Linux/macOS에서 아카이브 복원:
+
+```sh
+cat dsh-sanitized.7z.00[1-7] > dsh-sanitized.7z
+```
